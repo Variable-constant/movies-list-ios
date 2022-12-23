@@ -31,6 +31,24 @@ class ViewController: UIViewController {
     
     private var years: Array<Int> = [1980, 2000, 2020]
     
+    lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(shuffleMovies), for: .valueChanged)
+        return refreshControl
+    }()
+    
+    @objc
+    private func shuffleMovies() {
+        years.shuffle()
+        for y in years {
+            moviesByYear[y]?.shuffle()
+        }
+        addMovieButton.isEnabled = false
+        addMovieButton.alpha = 0.4
+        moviesTableView.reloadData()
+        refreshControl.endRefreshing()
+    }
+    
     lazy var moviesTableView: UITableView = {
         let moviesTableView = UITableView()
         moviesTableView.register(MovieTableViewCell.self, forCellReuseIdentifier: "movieCell")
@@ -39,6 +57,7 @@ class ViewController: UIViewController {
         moviesTableView.delegate = self
         moviesTableView.allowsSelection = false
         moviesTableView.separatorColor = moviesTableView.backgroundColor
+        moviesTableView.refreshControl = refreshControl
         return moviesTableView
     }()
     
