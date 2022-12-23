@@ -114,8 +114,9 @@ extension ViewController: UITableViewDataSource{
             return cell
         }
         cell.movie = movies[indexPath.row]
+        let year = years[indexPath.section]
         cell.ratingStars.configureView{ [self] index in
-            self.moviesByYear[years[indexPath.section]]?[indexPath.row].rating = index + 1
+            self.moviesByYear[year]?[indexPath.row].rating = index + 1
         }
         cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: UIScreen.main.bounds.width)
         return cell
